@@ -1,0 +1,17 @@
+{
+  "id": "F004_priority_hu_over_pon",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "priority",
+  "setup": {
+    "discarder": 0
+  },
+  "claims": [
+    {"seat": 1, "action": "pon", "candidate": 11},
+    {"seat": 2, "action": "hu", "candidate": 11}
+  ],
+  "expect": {
+    "winner_seat": 2,
+    "winner_action": "hu",
+    "winner_candidate": 11
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "F007_scoring_qidui",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "scoring",
+  "setup": {
+    "wealth_god": 33,
+    "hands": {
+      "0": {"0": 2, "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2}
+    }
+  },
+  "operation": {
+    "type": "self_hu",
+    "seat": 0
+  },
+  "expect": {
+    "fan_types_contains": ["qidui"],
+    "fan_total_min": 3,
+    "winner_seat": 0,
+    "winner_score_min": 30,
+    "score_sum_zero": true
+  }
+}

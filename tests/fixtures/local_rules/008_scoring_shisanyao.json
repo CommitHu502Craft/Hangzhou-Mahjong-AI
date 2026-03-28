@@ -1,0 +1,36 @@
+{
+  "id": "F008_scoring_shisanyao",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "scoring",
+  "setup": {
+    "wealth_god": 33,
+    "hands": {
+      "0": {
+        "0": 2,
+        "8": 1,
+        "9": 1,
+        "17": 1,
+        "18": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1,
+        "32": 1,
+        "33": 1
+      }
+    }
+  },
+  "operation": {
+    "type": "self_hu",
+    "seat": 0
+  },
+  "expect": {
+    "fan_types_contains": ["shisanyao"],
+    "fan_total_min": 7,
+    "winner_seat": 0,
+    "winner_score_min": 30,
+    "score_sum_zero": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "F006_qiaoxiang_restricts_reaction",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "env_mask",
+  "setup": {
+    "seed": 106,
+    "hero_seat": 0,
+    "phase": "reaction",
+    "actor": 0,
+    "last_discard": 6,
+    "last_discarder": 3,
+    "wealth_god": 33,
+    "hands": {
+      "0": {"6": 3, "5": 1, "7": 1}
+    },
+    "activate_qiaoxiang_seats": [0],
+    "prepare_hero_reaction_claims": true
+  },
+  "expect": {
+    "mask_true": [42],
+    "mask_false": [34, 35, 36, 37, 38]
+  }
+}

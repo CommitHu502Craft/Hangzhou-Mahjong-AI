@@ -1,0 +1,18 @@
+{
+  "id": "F005_priority_multi_hu_clockwise",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "priority",
+  "setup": {
+    "discarder": 2
+  },
+  "claims": [
+    {"seat": 0, "action": "hu", "candidate": 9},
+    {"seat": 3, "action": "hu", "candidate": 9},
+    {"seat": 1, "action": "hu", "candidate": 9}
+  ],
+  "expect": {
+    "winner_seat": 3,
+    "winner_action": "hu",
+    "winner_candidate": 9
+  }
+}

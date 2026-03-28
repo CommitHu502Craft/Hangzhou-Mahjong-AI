@@ -1,0 +1,15 @@
+{
+  "id": "F010_draw_scoring_zero",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "scoring",
+  "setup": {
+    "wall": []
+  },
+  "operation": {
+    "type": "force_draw",
+    "seat": 0
+  },
+  "expect": {
+    "score_sum_zero": true
+  }
+}

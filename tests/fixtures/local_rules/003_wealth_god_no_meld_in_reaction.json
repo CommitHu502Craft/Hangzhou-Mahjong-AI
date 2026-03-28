@@ -1,0 +1,22 @@
+{
+  "id": "F003_wealth_god_no_meld_in_reaction",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "env_mask",
+  "setup": {
+    "seed": 103,
+    "hero_seat": 0,
+    "phase": "reaction",
+    "actor": 0,
+    "last_discard": 5,
+    "last_discarder": 3,
+    "wealth_god": 5,
+    "hands": {
+      "0": {"5": 3, "4": 1, "6": 1}
+    },
+    "prepare_hero_reaction_claims": true
+  },
+  "expect": {
+    "mask_true": [42],
+    "mask_false": [34, 35, 36, 37, 38]
+  }
+}

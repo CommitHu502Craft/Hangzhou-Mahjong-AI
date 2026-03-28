@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>杭州麻将AI训练全流程科普课件</title>
+    <style>
+      :root {
+        --bg-1: #f2f7f6;
+        --bg-2: #eef2fb;
+        --card: #ffffff;
+        --ink: #123433;
+        --muted: #4f6f6d;
+        --line: #d8e8e4;
+        --brand: #0f9c8d;
+        --brand-2: #107f74;
+        --accent: #ff7a59;
+        --accent-soft: #ffe9e2;
+        --ok: #0c8d5f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(80rem 40rem at 5% 0%, #dff5ef, transparent 60%),
+          radial-gradient(70rem 38rem at 100% 100%, #e5eaff, transparent 60%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      }
+
+      body {
+        padding: 1rem;
+      }
+
+      .app {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.9rem;
+      }
+
+      .title-wrap h1 {
+        margin: 0;
+        font-size: clamp(1rem, 2vw, 1.3rem);
+      }
+
+      .title-wrap p {
+        margin: 0.2rem 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.5rem 0.9rem;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        border-color: transparent;
+        color: #fff;
+      }
+
+      .counter {
+        min-width: 7rem;
+        text-align: center;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .deck {
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: var(--card);
+        box-shadow: 0 18px 50px rgba(16, 41, 39, 0.12);
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide {
+        display: none;
+        height: 100%;
+        padding: clamp(1.1rem, 2.1vw, 2.2rem);
+        grid-template-rows: auto 1fr auto;
+        gap: 0.6rem;
+      }
+
+      .slide.active {
+        display: grid;
+      }
+
+      .slide header h2 {
+        margin: 0;
+        font-size: clamp(1.3rem, 2.7vw, 2.05rem);
+      }
+
+      .slide header p {
+        margin: 0.35rem 0 0;
+        color: var(--muted);
+      }
+
+      .badge {
+        display: inline-block;
+        margin-bottom: 0.35rem;
+        background: var(--accent-soft);
+        color: #c95135;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.76rem;
+        padding: 0.2rem 0.55rem;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        align-content: start;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 0.75rem;
+        background: #fbfefd;
+      }
+
+      .panel h3 {
+        margin: 0 0 0.45rem;
+        font-size: 1rem;
+      }
+
+      .panel p,
+      .panel li {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .panel ul {
+        margin: 0;
+        padding-left: 1.1rem;
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .step {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+        padding: 0.7rem;
+        min-height: 5.1rem;
+      }
+
+      .step .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 50%;
+        background: #daf3ee;
+        color: var(--brand-2);
+        font-weight: 800;
+        font-size: 0.78rem;
+      }
+
+      .step h4 {
+        margin: 0.4rem 0 0.2rem;
+        font-size: 0.95rem;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .arrow {
+        text-align: center;
+        color: var(--brand-2);
+        font-weight: 800;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.7rem;
+      }
+
+      .stat {
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: #fff;
+        padding: 0.65rem;
+      }
+
+      .stat strong {
+        font-size: 1.4rem;
+        color: var(--brand-2);
+      }
+
+      .stat p {
+        margin: 0.2rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .line {
+        display: grid;
+        grid-template-columns: 8.5rem 1fr;
+        gap: 0.6rem;
+        align-items: center;
+      }
+
+      .line .left {
+        font-weight: 700;
+        color: var(--brand-2);
+      }
+
+      .line .right {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0.45rem 0.6rem;
+        color: var(--muted);
+        background: #f8fcfb;
+      }
+
+      .highlight {
+        border-left: 4px solid var(--accent);
+        padding-left: 0.7rem;
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .footer-note {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
+      .progress-wrap {
+        margin-top: 0.75rem;
+        height: 8px;
+        border-radius: 999px;
+        background: #e6f0ed;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--accent), var(--brand));
+        transition: width 220ms ease;
+      }
+
+      .chip {
+        display: inline-block;
+        margin-right: 0.35rem;
+        margin-bottom: 0.25rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        padding: 0.18rem 0.55rem;
+        color: var(--brand-2);
+        background: #f6fcfa;
+        font-size: 0.76rem;
+      }
+
+      .ok {
+        color: var(--ok);
+        font-weight: 800;
+      }
+
+      @media (max-width: 1024px) {
+        .deck {
+          aspect-ratio: auto;
+          min-height: 80vh;
+        }
+
+        .grid-2,
+        .grid-3,
+        .process,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .arrow {
+          display: none;
+        }
+
+        .line {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="toolbar">
+        <div class="title-wrap">
+          <h1>杭州麻将AI训练全流程科普课件</h1>
+          <p>适合非计算机专业大学生 · 项目架构 + 训练方法 + 完成情况汇总</p>
+        </div>
+        <div class="controls">
+          <button class="btn" id="prevBtn">上一页</button>
+          <div class="counter" id="counter">1 / 10</div>
+          <button class="btn primary" id="nextBtn">下一页</button>
+        </div>
+      </div>
+
+      <div class="deck" id="deck">
+        <section class="slide active">
+          <header>
+            <span class="badge">Slide 1 · 封面</span>
+            <h2>从“麻将规则”到“人工智能训练”</h2>
+            <p>一个真实项目如何把 AI 训练流程变成可落地产品能力</p>
+          </header>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>今天我们讲什么？</h3>
+              <ul>
+                <li>AI 训练到底在“训练”什么</li>
+                <li>项目的整体架构是什么样</li>
+                <li>为什么先 BC 再 PPO，而不是直接强化学习</li>
+                <li>怎样评测才不“自嗨”</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>适合谁听？</h3>
+              <p>不需要编程基础。我们用生活化比喻解释模型训练，让你看懂 AI 项目是怎么一步步做出来的。</p>
+              <p style="margin-top: 0.6rem" class="highlight">关键词：规则、数据、训练、评测、可复现</p>
+            </article>
+          </div>
+          <div class="footer-note">
+            <span>讲师提示：先建立“流程感”，再讲算法细节</span>
+            <span>按 ← / → 可翻页</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 2 · AI 训练直觉</span>
+            <h2>人工智能训练像“学打麻将”</h2>
+            <p>核心不是背答案，而是不断做决策并通过反馈修正策略</p>
+          </header>
+          <div class="grid-3">
+            <article class="panel">
+              <h3>规则 = 课堂纪律</h3>
+              <p>哪些动作合法、何时能吃碰杠胡，这些是 AI 学习的边界。</p>
+            </article>
+            <article class="panel">
+              <h3>数据 = 练习题</h3>
+              <p>先给 AI 看大量“示范局面”，让它形成基础出牌习惯。</p>
+            </article>
+            <article class="panel">
+              <h3>奖励 = 成绩单</h3>
+              <p>每局结束后根据分差打分，AI 会逐渐偏向更高分策略。</p>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>一句话理解</h3>
+            <p>AI 训练 = 在规则内不断“做题 → 看分数 → 调整思路”，直到平均表现稳定提升。</p>
+          </div>
+          <div class="footer-note">
+            <span>课堂提问：为什么只看胜率会不可靠？</span>
+            <span>2 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 3 · 项目架构</span>
+            <h2>项目整体架构（从底层到上层）</h2>
+            <p>不是一个模型文件，而是一套可协作、可迭代的工程系统</p>
+          </header>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>底层：规则与环境</h3>
+              <p><span class="chip">engine.py</span><span class="chip">env.py</span><span class="chip">mapping.py</span></p>
+              <ul>
+                <li>实现麻将状态机、动作掩码、观测编码</li>
+                <li>保证动作合法、流程可控、seed 可复现</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>中层：训练与数据</h3>
+              <p><span class="chip">gen_data.py</span><span class="chip">bc_train.py</span><span class="chip">train_ppo.py</span></p>
+              <ul>
+                <li>RuleBot 产数据，BC 预热，PPO 微调</li>
+                <li>逐步引入对手池，避免策略震荡</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>上层：评测与交付</h3>
+              <p><span class="chip">eval_duplicate.py</span><span class="chip">tests/</span><span class="chip">docs/</span></p>
+              <ul>
+                <li>固定牌山评测，减少方差误导</li>
+                <li>测试门禁 + 文档 + 变更日志保障交付质量</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>可视化展示层</h3>
+              <p><span class="chip">frontend/ Vue3</span></p>
+              <ul>
+                <li>市场化宣传页面，向非技术人员解释 AI 价值</li>
+                <li>连接“技术能力”与“业务表达”</li>
+              </ul>
+            </article>
+          </div>
+          <div class="footer-note">
+            <span>重点：这是“系统工程”，不是只调一个参数</span>
+            <span>3 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 4 · 训练全流程</span>
+            <h2>训练全流程（课堂核心图）</h2>
+            <p>为什么采用 RuleBot → BC → PPO → Duplicate 这条路径？</p>
+          </header>
+          <div class="process">
+            <article class="step">
+              <span class="num">1</span>
+              <h4>规则Bot冷启动</h4>
+              <p>先让系统“能玩起来”</p>
+            </article>
+            <div class="arrow">→</div>
+            <article class="step">
+              <span class="num">2</span>
+              <h4>BC 预训练</h4>
+              <p>学会基础出牌习惯</p>
+            </article>
+            <div class="arrow">→</div>
+            <article class="step">
+              <span class="num">3</span>
+              <h4>PPO 微调</h4>
+              <p>通过奖励提升对局质量</p>
+            </article>
+            <div class="arrow">→</div>
+            <article class="step">
+              <span class="num">4</span>
+              <h4>Duplicate 评测</h4>
+              <p>固定 seed 做公平对比</p>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>这条路线为什么现实？</h3>
+            <ul>
+              <li>没有高质量人类牌谱时，直接 RL 容易训练慢、成本高。</li>
+              <li>BC 先把“基础动作”学会，再 RL 找“更优策略”，效率更高。</li>
+              <li>Duplicate 避免随机牌运干扰，评测更可信。</li>
+            </ul>
+          </div>
+          <div class="footer-note">
+            <span>适用于多数“规则复杂 + 奖励稀疏”的项目</span>
+            <span>4 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 5 · 关键技术点</span>
+            <h2>模型为什么不会乱出牌？</h2>
+            <p>答案：合法动作掩码（Action Mask）</p>
+          </header>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>生活化理解</h3>
+              <p>像考试中的“可选题库”：系统先告诉 AI 当前哪些选项可选，禁止乱选。</p>
+            </article>
+            <article class="panel">
+              <h3>工程价值</h3>
+              <ul>
+                <li>减少非法动作错误</li>
+                <li>训练更稳定（降低 NaN 风险）</li>
+                <li>让策略学习聚焦在“有效决策”</li>
+              </ul>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>课程重点提示</h3>
+            <p>
+              在麻将这类动作空间大的问题里，<strong>mask</strong> 相当于“交通规则”。
+              没有它，AI 会频繁走进非法状态，学习效率大幅下降。
+            </p>
+          </div>
+          <div class="footer-note">
+            <span>关键词：MaskablePPO、合法动作、稳定训练</span>
+            <span>5 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 6 · 评测方法</span>
+            <h2>为什么要 Duplicate 复式评测？</h2>
+            <p>因为麻将方差大，单局胜负容易被“运气”误导</p>
+          </header>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>做法</h3>
+              <ul>
+                <li>固定一组牌山 seeds（如 1001~2000）</li>
+                <li>同一 seed 下轮换坐东南西北</li>
+                <li>计算平均分差 + 方差 + 置信区间</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>好处</h3>
+              <ul>
+                <li>更公平地比较不同模型版本</li>
+                <li>减少“偶然赢了几把”的假提升</li>
+                <li>更适合产品上线前风控决策</li>
+              </ul>
+            </article>
+          </div>
+          <div class="panel highlight">
+            单看胜率不够，建议重点看：mean_diff、std_diff、ci95。
+          </div>
+          <div class="footer-note">
+            <span>课堂互动：如果只看胜率，会产生什么误判？</span>
+            <span>6 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 7 · 项目进度</span>
+            <h2>项目整体完成情况（截至当前）</h2>
+            <p>从“空目录”到“前后端可演示”的阶段成果</p>
+          </header>
+          <div class="stats">
+            <article class="stat">
+              <strong>22+</strong>
+              <p>核心任务完成</p>
+            </article>
+            <article class="stat">
+              <strong class="ok">7/7</strong>
+              <p>测试门禁通过</p>
+            </article>
+            <article class="stat">
+              <strong>Vue3</strong>
+              <p>前端展示站上线</p>
+            </article>
+            <article class="stat">
+              <strong>Duplicate</strong>
+              <p>评测脚本可用</p>
+            </article>
+          </div>
+          <div class="timeline">
+            <div class="line">
+              <div class="left">规则与环境</div>
+              <div class="right">engine/env/mask 已可运行，支持快进与防死循环。</div>
+            </div>
+            <div class="line">
+              <div class="left">训练链路</div>
+              <div class="right">RuleBot 产数据、BC、PPO 训练入口均已打通。</div>
+            </div>
+            <div class="line">
+              <div class="left">评测链路</div>
+              <div class="right">Duplicate 报告包含 mean_diff/std_diff/ci95/n_games。</div>
+            </div>
+            <div class="line">
+              <div class="left">展示层</div>
+              <div class="right">Vue3 营销页支持响应式、FAQ、表单交互。</div>
+            </div>
+          </div>
+          <div class="footer-note">
+            <span>结论：已具备“课堂展示 + 内测演示 + 持续迭代”基础</span>
+            <span>7 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 8 · 当前挑战</span>
+            <h2>还有哪些地方要继续优化？</h2>
+            <p>让同学看到：AI 项目不是一次完成，而是持续迭代</p>
+          </header>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>挑战 1：规则精度</h3>
+              <p>胡牌判定仍有简化，需要补充更完整的和牌逻辑，减少“过早终局”。</p>
+            </article>
+            <article class="panel">
+              <h3>挑战 2：数据密度</h3>
+              <p>部分对局有效决策步数较少，后续需提高样本有效性与多样性。</p>
+            </article>
+            <article class="panel">
+              <h3>挑战 3：评测严格性</h3>
+              <p>计划增加更严格模型加载校验，避免评测静默回退。</p>
+            </article>
+            <article class="panel">
+              <h3>挑战 4：规模化训练</h3>
+              <p>下一阶段会扩大 seeds 与训练步数，观察长期趋势而非短期波动。</p>
+            </article>
+          </div>
+          <div class="footer-note">
+            <span>工程观念：问题不是失败，而是下一轮迭代的输入</span>
+            <span>8 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 9 · 方法论总结</span>
+            <h2>给非计算机同学的 AI 项目方法论</h2>
+            <p>把复杂技术拆成“可理解、可验证、可交付”的步骤</p>
+          </header>
+          <div class="grid-3">
+            <article class="panel">
+              <h3>先定义规则边界</h3>
+              <p>明确什么能做、什么不能做，模型才不会“乱学”。</p>
+            </article>
+            <article class="panel">
+              <h3>先跑通再做强</h3>
+              <p>先保证流程稳定，再逐步提升策略水平和复杂度。</p>
+            </article>
+            <article class="panel">
+              <h3>用可信评测说话</h3>
+              <p>用同一套可复现实验比较版本，避免主观判断。</p>
+            </article>
+          </div>
+          <div class="panel highlight">
+            AI 项目成功的关键不是“最炫算法”，而是“稳定工程 + 可信评测 + 持续迭代”。
+          </div>
+          <div class="footer-note">
+            <span>可迁移到金融风控、推荐系统、机器人等多种领域</span>
+            <span>9 / 10</span>
+          </div>
+        </section>
+
+        <section class="slide">
+          <header>
+            <span class="badge">Slide 10 · 收尾</span>
+            <h2>课堂回顾与讨论</h2>
+            <p>你已经看懂了一个完整 AI 项目从 0 到 1 的主线</p>
+          </header>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>今天的 3 个关键结论</h3>
+              <ul>
+                <li>训练不是黑箱，本质是“规则+反馈”的迭代。</li>
+                <li>项目架构决定了能否稳定落地，而不是只看模型名字。</li>
+                <li>可信评测比单次好成绩更重要。</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>讨论题（课堂互动）</h3>
+              <ul>
+                <li>如果你是产品经理，你会先优化哪个环节？</li>
+                <li>如果算力预算有限，怎样分配最划算？</li>
+                <li>如果要面向更多人群，前端应该如何改版？</li>
+              </ul>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>文件位置</h3>
+            <p><code>docs/ai_training_classroom_ppt.html</code>（浏览器直接打开即可演示）</p>
+          </div>
+          <div class="footer-note">
+            <span>感谢聆听 · 可继续扩展为你所在课程版本</span>
+            <span>10 / 10</span>
+          </div>
+        </section>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress" id="progress"></div>
+      </div>
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      let idx = 0;
+
+      function render() {
+        slides.forEach((el, i) => el.classList.toggle("active", i === idx));
+        counter.textContent = `${idx + 1} / ${slides.length}`;
+        progress.style.width = `${((idx + 1) / slides.length) * 100}%`;
+      }
+
+      function next() {
+        idx = Math.min(slides.length - 1, idx + 1);
+        render();
+      }
+
+      function prev() {
+        idx = Math.max(0, idx - 1);
+        render();
+      }
+
+      prevBtn.addEventListener("click", prev);
+      nextBtn.addEventListener("click", next);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "PageDown") next();
+        if (e.key === "ArrowLeft" || e.key === "PageUp") prev();
+      });
+
+      let startX = 0;
+      document.addEventListener(
+        "touchstart",
+        (e) => {
+          startX = e.changedTouches[0].clientX;
+        },
+        { passive: true }
+      );
+      document.addEventListener(
+        "touchend",
+        (e) => {
+          const endX = e.changedTouches[0].clientX;
+          if (Math.abs(endX - startX) < 40) return;
+          if (endX < startX) next();
+          else prev();
+        },
+        { passive: true }
+      );
+
+      render();
+    </script>
+  </body>
+</html>

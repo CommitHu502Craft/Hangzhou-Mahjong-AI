@@ -1,0 +1,22 @@
+{
+  "id": "F009_scoring_qingyise",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "scoring",
+  "setup": {
+    "wealth_god": 33,
+    "hands": {
+      "0": {"0": 3, "1": 3, "2": 3, "3": 3, "4": 2}
+    }
+  },
+  "operation": {
+    "type": "self_hu",
+    "seat": 0
+  },
+  "expect": {
+    "fan_types_contains": ["qingyise"],
+    "fan_total_min": 4,
+    "winner_seat": 0,
+    "winner_score_min": 30,
+    "score_sum_zero": true
+  }
+}

@@ -1,0 +1,37 @@
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+.venv*/
+
+# Node/Vite artifacts
+frontend/node_modules/
+frontend/dist/
+
+# Training/data artifacts (generated)
+datasets/artifacts/
+models/
+reports/
+logs/
+
+# Local/OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local notes/runtime files
+*.log
+*.tmp
+- long run alias v1_200k.txt
+
+# Environment files
+.env
+.env.*
+*.local

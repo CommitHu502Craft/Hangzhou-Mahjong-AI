@@ -1,0 +1,19 @@
+{
+  "id": "F001_wealth_god_protect_discard",
+  "profile_path": "rules/profile_hangzhou_mvp.yaml",
+  "scenario": "env_mask",
+  "setup": {
+    "seed": 101,
+    "hero_seat": 0,
+    "phase": "myturn",
+    "actor": 0,
+    "wealth_god": 5,
+    "hands": {
+      "0": {"5": 1, "7": 1}
+    }
+  },
+  "expect": {
+    "mask_true": [7],
+    "mask_false": [5, 42]
+  }
+}

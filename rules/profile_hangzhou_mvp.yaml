@@ -1,0 +1,86 @@
+{
+  "profile_name": "hangzhou_local_table_v1",
+  "version": "2026-02-22",
+  "description": "Top10争议规则画像（MVP可训练口径）",
+  "rules": {
+    "wealth_god": {
+      "enabled": true,
+      "discardable": false,
+      "can_meld": false
+    },
+    "qiaoxiang": {
+      "enabled": true,
+      "fan_bonus": 1,
+      "lianzhuang_multiplier": 1.0
+    },
+    "special_hu_types": [
+      "qidui",
+      "shisanyao"
+    ],
+    "scoring": {
+      "base_score_unit": 10,
+      "score_cap": null,
+      "draw_scoring_mode": "zero",
+      "package_liability": "none",
+      "flow_scoring_mode": "zero"
+    },
+    "reaction": {
+      "priority": "hu>gang_pon>chi",
+      "tie_break": "clockwise_from_discarder_next",
+      "qiangganghu": false,
+      "gang_draw_replacement": "wall_tail"
+    }
+  },
+  "top10_disputes": [
+    {
+      "id": "D01",
+      "rule": "财神是否可打",
+      "expected": "有其他可打牌时不打财神"
+    },
+    {
+      "id": "D02",
+      "rule": "仅剩财神是否可打",
+      "expected": "只剩财神时允许打出"
+    },
+    {
+      "id": "D03",
+      "rule": "财神能否参与吃碰杠",
+      "expected": "本画像设为不可参与"
+    },
+    {
+      "id": "D04",
+      "rule": "反应抢权优先级",
+      "expected": "胡 > 杠/碰 > 吃"
+    },
+    {
+      "id": "D05",
+      "rule": "同优先级多人裁决",
+      "expected": "从出牌者下家开始顺时针"
+    },
+    {
+      "id": "D06",
+      "rule": "敲响触发",
+      "expected": "杠后进入敲响态"
+    },
+    {
+      "id": "D07",
+      "rule": "敲响阶段动作限制",
+      "expected": "敲响态仅可胡或过"
+    },
+    {
+      "id": "D08",
+      "rule": "七对判胡与计分",
+      "expected": "判胡并计入qiduifan"
+    },
+    {
+      "id": "D09",
+      "rule": "十三幺判胡与计分",
+      "expected": "判胡并计入shisanyaofan"
+    },
+    {
+      "id": "D10",
+      "rule": "流局算分",
+      "expected": "本画像设为流局全0"
+    }
+  ]
+}
