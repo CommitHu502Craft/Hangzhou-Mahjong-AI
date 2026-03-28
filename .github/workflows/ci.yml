@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   python-tests:
     name: Python Tests
@@ -24,11 +27,14 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v3
 
+      - name: Create venv
+        run: uv venv .venv --python 3.11
+
       - name: Install dependencies
-        run: uv pip install --system -r requirements.txt
+        run: uv pip install --python .venv/bin/python -r requirements.txt
 
       - name: Run tests
-        run: uv run pytest tests -q
+        run: .venv/bin/python -m pytest tests -q
 
   frontend-build:
     name: Frontend Build
@@ -52,4 +58,3 @@ jobs:
 
       - name: Build frontend
         run: npm run build
-
