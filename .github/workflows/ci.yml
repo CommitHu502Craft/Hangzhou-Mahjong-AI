@@ -33,6 +33,9 @@ jobs:
       - name: Install dependencies
         run: uv pip install --python .venv/bin/python -r requirements.txt
 
+      - name: Install test dependencies
+        run: uv pip install --python .venv/bin/python pytest
+
       - name: Run tests
         run: .venv/bin/python -m pytest tests -q
 
