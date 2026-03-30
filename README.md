@@ -15,6 +15,14 @@ Current focus:
 
 This repo is intended for project showcase and engineering iteration, not a finished production release.
 
+## Known Limitations
+
+- Real-world validation is incomplete; the current status is still below a strong real-human-play claim
+- Rule coverage is focused on the current Hangzhou Mahjong MVP profile, not full regional rule breadth
+- Public releases do not include large generated artifacts such as trained models, reports, or datasets
+- Evaluation evidence is stronger in duplicate/sim settings than in real gameplay settings
+- The frontend is a showcase/demo layer, not a full product UI
+
 ## Repository Layout
 
 - `api/` FastAPI backend endpoints
