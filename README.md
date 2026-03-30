@@ -30,6 +30,20 @@ This repo is intended for project showcase and engineering iteration, not a fini
 - Evaluation evidence is stronger in duplicate/sim settings than in real gameplay settings
 - The frontend is a showcase/demo layer, not a full product UI
 
+## Screenshots
+
+Homepage UI:
+
+![Homepage UI](docs/pictures/homepage-ui.png)
+
+Training progress panel:
+
+![Training progress panel](docs/pictures/training-progress-panel.png)
+
+Recent logs panel:
+
+![Recent logs panel](docs/pictures/recent-logs-panel.png)
+
 ## Repository Layout
 
 - `api/` FastAPI backend endpoints
