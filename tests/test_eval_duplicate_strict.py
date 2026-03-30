@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from rl.eval_duplicate import PolicyRunner, build_policy_runner, evaluate, resolve_seed_list
+from rl.eval_duplicate import REPORT_SCHEMA_VERSION, PolicyRunner, build_policy_runner, evaluate, resolve_seed_list
 
 
 def test_policy_runner_fallback_when_model_missing():
@@ -97,6 +97,7 @@ def test_evaluate_report_includes_opponent_epsilon(tmp_path: Path):
         opponent_epsilon=0.23,
     )
     report = json.loads(out.read_text(encoding="utf-8"))
+    assert report["report_schema_version"] == REPORT_SCHEMA_VERSION
     assert report["opponent_epsilon"] == pytest.approx(0.23)
     assert report["opponent_mix"] == "rule:1.0"
     assert report["seed_set_id"] != ""
