@@ -23,6 +23,20 @@
 - 现阶段评测证据在 duplicate / simulation 场景下更充分，真人场景证据较弱
 - 前端目前偏展示与演示，不是完整产品化界面
 
+## 截图
+
+首页界面：
+
+![Homepage UI](docs/pictures/homepage-ui.png)
+
+训练进度面板：
+
+![Training progress panel](docs/pictures/training-progress-panel.png)
+
+最近日志面板：
+
+![Recent logs panel](docs/pictures/recent-logs-panel.png)
+
 ## 0) 当前验证状态（2026-02-22）
 
 - 回归门禁：`uv run pytest tests -q` -> `110 passed`
