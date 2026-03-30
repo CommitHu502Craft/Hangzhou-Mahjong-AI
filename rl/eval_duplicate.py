@@ -18,6 +18,8 @@ from env import HangzhouMahjongEnv
 from rl.report_context import build_report_context, read_spec_version
 from rl.seed_splits import DEFAULT_SEED_SPLITS, classify_seed_set, resolve_seed_set
 
+REPORT_SCHEMA_VERSION = "duplicate_eval.v1"
+
 
 class PolicyRunner:
     def __init__(self, model_path: str, strict_load: bool = False):
@@ -285,6 +287,7 @@ def evaluate(
     )
 
     report = {
+        "report_schema_version": REPORT_SCHEMA_VERSION,
         "model": model,
         "resolved_model_path": policy.resolved_model_path,
         "backend": policy.backend,
