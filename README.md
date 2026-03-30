@@ -15,6 +15,21 @@ Current focus:
 
 This repo is intended for project showcase and engineering iteration, not a finished production release.
 
+## Roadmap
+
+- `v0.0.x alpha`: keep the repo public-ready, stable to clone, and easy to inspect
+- `v0.1.0`: make the train/eval loop reproducible on a clean machine
+- `v0.2.0`: improve rule coverage, evaluation reporting, and benchmark clarity
+- `v0.3.0`: strengthen the frontend demo, API usability, and contributor workflow
+
+## Known Limitations
+
+- Real-world validation is incomplete; the current status is still below a strong real-human-play claim
+- Rule coverage is focused on the current Hangzhou Mahjong MVP profile, not full regional rule breadth
+- Public releases do not include large generated artifacts such as trained models, reports, or datasets
+- Evaluation evidence is stronger in duplicate/sim settings than in real gameplay settings
+- The frontend is a showcase/demo layer, not a full product UI
+
 ## Repository Layout
 
 - `api/` FastAPI backend endpoints
@@ -62,4 +77,3 @@ npm run dev
 - License: GNU General Public License v3.0 (`LICENSE`)
 - Large/generated local artifacts are intentionally excluded via `.gitignore`
 - If you need reproducible results, regenerate artifacts locally with the provided scripts
-
