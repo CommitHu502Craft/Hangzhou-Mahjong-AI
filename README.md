@@ -15,6 +15,13 @@ Current focus:
 
 This repo is intended for project showcase and engineering iteration, not a finished production release.
 
+## Roadmap
+
+- `v0.0.x alpha`: keep the repo public-ready, stable to clone, and easy to inspect
+- `v0.1.0`: make the train/eval loop reproducible on a clean machine
+- `v0.2.0`: improve rule coverage, evaluation reporting, and benchmark clarity
+- `v0.3.0`: strengthen the frontend demo, API usability, and contributor workflow
+
 ## Known Limitations
 
 - Real-world validation is incomplete; the current status is still below a strong real-human-play claim
