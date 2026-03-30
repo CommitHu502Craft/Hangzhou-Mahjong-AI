@@ -13,7 +13,7 @@ Current focus:
 - MaskablePPO fine-tuning
 - Duplicate evaluation with fixed seeds and seat rotation
 
-This repo is intended for project showcase and engineering iteration, not a finished production release.
+Active alpha repository for a reproducible Hangzhou Mahjong AI pipeline, intended for public inspection, iteration, and contributor onboarding rather than production deployment.
 
 ## Roadmap
 
